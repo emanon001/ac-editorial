@@ -21,6 +21,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .text()
         .await?;
 
+    // PDF & Youtube
     let pat = Pattern::new(
         r#"
         <ul class="nav nav-tabs">
@@ -32,9 +33,24 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     "#,
     )?;
     let result = pat.matches(&doc);
+    if !result.is_empty() {
+        for r in result {
+            println!("{}", r["pdf"]);
+            println!("{}", r["youtube"]);
+        }
+        return Ok(());
+    }
+    // single
+    let pat = Pattern::new(
+        r#"
+            <ul class="nav nav-tabs">
+                <li><a href="{{editorial}}">解説</a></li>
+            </ul>
+        "#,
+    )?;
+    let result = pat.matches(&doc);
     for r in result {
-        println!("{}", r["pdf"]);
-        println!("{}", r["youtube"]);
+        println!("{}", r["editorial"]);
     }
     Ok(())
 }
