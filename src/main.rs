@@ -11,46 +11,28 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         )
         .get_matches();
     let contest_id = matches.value_of("contest_id").unwrap();
-    let contest_url = format!("https://atcoder.jp/contests/{}", contest_id);
+    let editorial_url = format!("https://atcoder.jp/contests/{}/editorial", contest_id);
     let client = reqwest::ClientBuilder::new().gzip(true).build().unwrap();
     let doc = client
-        .get(&contest_url)
+        .get(&editorial_url)
         .header("Accept-Language", "ja")
         .send()
         .await?
         .text()
         .await?;
 
-    // PDF & Youtube
+    println!("{}", editorial_url);
     let pat = Pattern::new(
         r#"
-        <ul class="nav nav-tabs">
-            <ul class="dropdown-menu">
-                <li><a href="{{pdf}}">PDF</a></li>
-                <li><a href="{{youtube}}">YouTube</a></li>
-            </ul>
+        <h3>コンテスト全体の解説</h3>
+        <ul>
+            <li><a href="{{url}}">公式解説</a></li>
         </ul>
-    "#,
-    )?;
-    let result = pat.matches(&doc);
-    if !result.is_empty() {
-        for r in result {
-            println!("{}", r["pdf"]);
-            println!("{}", r["youtube"]);
-        }
-        return Ok(());
-    }
-    // single
-    let pat = Pattern::new(
-        r#"
-            <ul class="nav nav-tabs">
-                <li><a href="{{editorial}}">解説</a></li>
-            </ul>
         "#,
     )?;
     let result = pat.matches(&doc);
     for r in result {
-        println!("{}", r["editorial"]);
+        println!("{}", r["url"]);
     }
     Ok(())
 }
