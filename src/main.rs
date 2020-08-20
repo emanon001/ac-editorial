@@ -21,7 +21,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .text()
         .await?;
 
-    println!("{}", editorial_url);
     let pat = Pattern::new(
         r#"
         <h3>コンテスト全体の解説</h3>
