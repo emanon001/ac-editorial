@@ -8,6 +8,7 @@ dependencies = [
  "easy-scraper",
  "reqwest",
  "tokio",
+ "url",
 ]
 
 [[package]]

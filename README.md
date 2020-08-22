@@ -12,5 +12,5 @@ $ cargo install --git https://github.com/emanon001/ac-editorial
 $ ac-editorial abc174
 https://img.atcoder.jp/abc174/editorial.pdf
 https://youtu.be/h0MGG8rxrYc
-C - Repsept /contests/abc174/editorial/28
+C - Repsept https://atcoder.jp/contests/abc174/editorial/28
 ```
