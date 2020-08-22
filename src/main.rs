@@ -23,7 +23,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let pat = Pattern::new(
         r#"
-        <h3>コンテスト全体の解説</h3>
+        <h3>{{title}}</h3>
         <ul>
             <li><a href="{{url}}">公式解説</a></li>
         </ul>
@@ -31,7 +31,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     )?;
     let result = pat.matches(&doc);
     for r in result {
-        println!("{}", r["url"]);
+        let title = &r["title"];
+        let url = &r["url"];
+        if title == "コンテスト全体の解説" {
+            println!("{}", url);
+        } else {
+            println!("{} {}", title, url);
+        };
     }
+
     Ok(())
 }
