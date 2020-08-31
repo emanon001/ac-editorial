@@ -1,19 +1,19 @@
-use clap::{App, Arg};
 use easy_scraper::Pattern;
+use structopt::StructOpt;
 use url::Url;
 
 const ATCODER_BASE_URL: &str = "https://atcoder.jp";
 
+#[derive(StructOpt, Debug)]
+#[structopt(name = "ac-editorial")]
+struct Opt {
+    contest_id: String,
+}
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let matches = App::new("ac-editorial")
-        .arg(
-            Arg::new("contest_id")
-                .value_name("contest_id")
-                .required(true),
-        )
-        .get_matches();
-    let contest_id = matches.value_of("contest_id").unwrap();
+    let opt = Opt::from_args();
+    let contest_id = opt.contest_id;
     let editorial_url = format!("{}/contests/{}/editorial", ATCODER_BASE_URL, contest_id);
     let client = reqwest::ClientBuilder::new().gzip(true).build().unwrap();
     let doc = client
